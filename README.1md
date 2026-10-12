@@ -1,0 +1,28 @@
+# Portfolio template
+
+Open `index.html` in a browser — no build step.
+
+```
+index.html      Highlights (carousel + quick links)
+about.html      About (headshot, facts, skills, experience)
+projects.html   Projects (4 sections of clickable cards)
+css/styles.css  Shared styles for every page
+js/apps.js      Theme toggle, carousel, project cards, mobile menu
+assets/         Images, headshot, CV
+```
+
+## Swapping in your content
+
+- **Carousel images:** drop your photos into `assets/` (e.g. `highlight-1.jpg`) and update the `src` in `index.html`. Landscape images around 1600×700 work best.
+- **Add a slide:** copy one `<figure class="slide">` block. Dots are generated automatically.
+- **Auto-advance:** `data-interval="7000"` on the carousel (milliseconds). Set to `0` to turn it off.
+- **Headshot:** `assets/headshot.jpg`, portrait (~4:5), then update `about.html`.
+- **CV:** add `assets/cv.pdf`.
+- **Add a project:** copy one `<div class="card">` block in `projects.html`. The visible card is the `.card-body`; everything inside `.card-details` is what shows in the pop-up when clicked.
+- **Links:** search for `your-username`, `your-profile` and `you@example.com` and replace them.
+
+## Changing the look
+
+All colours live at the top of `css/styles.css` in `:root`. Change `--accent` (and `--accent-strong` for hover) to try a different secondary colour — e.g. purple `#7c4dff` / `#6236e0` or green `#1f9d55` / `#178048`. The `.see-more` overlay uses the accent as an `rgba()` value, so update that line too.
+
+The guide lines' positions are `--guide-x` and `--guide-y`.
