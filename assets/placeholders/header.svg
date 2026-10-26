@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 430" width="920" height="430">
+<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E25A12"/><stop offset="1" stop-color="#7a2c05"/></linearGradient></defs>
+<rect width="920" height="430" fill="url(#g)"/>
+<path d="M0 430L920 120V430z" fill="#000" fill-opacity=".18"/>
+<text x="460" y="215" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="54" fill="#fff">Header image</text>
+<text x="460" y="265" text-anchor="middle" font-family="monospace" font-size="22" fill="#fff" fill-opacity=".8">920 × 430 recommended</text></svg>

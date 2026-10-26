@@ -33,6 +33,7 @@
     initMobileMenu();
     initCarousel();
     initProjectCards();
+    initGallery();
     initFooterYear();
   });
 
@@ -151,25 +152,26 @@
     start();
   }
 
-  /* ---------- Project cards ---------- */
+  /* ---------- Project cards ----------
+     Cards are links to their own page. On a normal click we play the
+     ripple + press effect first, then follow the link. Ctrl/Cmd/middle
+     click still opens in a new tab as usual. */
   function initProjectCards() {
     var cards = document.querySelectorAll(".card[data-project]");
-    var dialog = document.getElementById("project-dialog");
-    if (!cards.length || !dialog) return;
-
-    var body = dialog.querySelector(".dialog-body");
-    var closeBtn = dialog.querySelector(".dialog-close");
+    if (!cards.length) return;
 
     cards.forEach(function (card) {
       card.addEventListener("click", function (e) {
-        // 1. Ripple from the click point
+        var href = card.getAttribute("href");
+        if (!href || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+        e.preventDefault();
+
+        // 1. Ripple from the click point (centre if opened with the keyboard)
         var rect = card.getBoundingClientRect();
         var ripple = document.createElement("span");
         ripple.className = "ripple";
-        var x = e.clientX ? e.clientX - rect.left : rect.width / 2;
-        var y = e.clientY ? e.clientY - rect.top : rect.height / 2;
-        ripple.style.left = x + "px";
-        ripple.style.top = y + "px";
+        ripple.style.left = (e.clientX ? e.clientX - rect.left : rect.width / 2) + "px";
+        ripple.style.top = (e.clientY ? e.clientY - rect.top : rect.height / 2) + "px";
         card.appendChild(ripple);
         ripple.addEventListener("animationend", function () { ripple.remove(); });
 
@@ -178,29 +180,104 @@
         void card.offsetWidth; // restart animation
         card.classList.add("is-pressed");
 
-        // 3. Open the details after the effect has a moment to play
-        var details = card.querySelector(".card-details");
-        setTimeout(function () {
-          body.innerHTML = details ? details.innerHTML : "";
-          if (typeof dialog.showModal === "function") dialog.showModal();
-          else dialog.setAttribute("open", "");
-        }, 220);
-      });
-
-      // Cards are divs with role="button", so give them keyboard support
-      card.addEventListener("keydown", function (e) {
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          card.click();
-        }
+        // 3. Go to the project page once the effect has played
+        setTimeout(function () { window.location.href = href; }, 260);
       });
     });
 
-    closeBtn.addEventListener("click", function () { dialog.close(); });
-    // Click on the backdrop closes it
-    dialog.addEventListener("click", function (e) {
-      if (e.target === dialog) dialog.close();
+    // Clear the pressed state if the visitor comes back with the Back button
+    window.addEventListener("pageshow", function () {
+      cards.forEach(function (c) { c.classList.remove("is-pressed"); });
     });
+  }
+
+  /* ---------- Project page gallery (Steam-style) ---------- */
+  function initGallery() {
+    var gallery = document.querySelector("[data-gallery]");
+    if (!gallery) return;
+
+    var stage = gallery.querySelector(".stage");
+    var img = gallery.querySelector(".stage-img");
+    var video = gallery.querySelector(".stage-video");
+    var counter = gallery.querySelector(".stage-count");
+    var strip = gallery.querySelector(".thumb-strip");
+    var thumbs = Array.prototype.slice.call(gallery.querySelectorAll(".shot-thumb"));
+    var lightbox = document.querySelector(".lightbox");
+    var index = 0;
+
+    if (!thumbs.length) return;
+
+    function show(i) {
+      index = (i + thumbs.length) % thumbs.length;
+      var t = thumbs[index];
+
+      if (t.dataset.video) {
+        img.hidden = true;
+        video.hidden = false;
+        if (video.getAttribute("src") !== t.dataset.video) video.src = t.dataset.video;
+      } else {
+        if (!video.hidden) { video.pause(); video.hidden = true; }
+        img.hidden = false;
+        img.src = t.dataset.src;
+        var thumbImg = t.querySelector("img");
+        img.alt = thumbImg ? thumbImg.alt : "";
+        img.classList.remove("fade-in");
+        void img.offsetWidth;
+        img.classList.add("fade-in");
+      }
+
+      thumbs.forEach(function (th, n) {
+        th.setAttribute("aria-current", n === index ? "true" : "false");
+      });
+      if (counter) counter.textContent = (index + 1) + " / " + thumbs.length;
+
+      // Keep the active thumbnail in view without scrolling the page
+      strip.scrollTo({
+        left: t.offsetLeft - strip.clientWidth / 2 + t.clientWidth / 2,
+        behavior: "smooth"
+      });
+    }
+
+    thumbs.forEach(function (t, n) {
+      t.addEventListener("click", function () { show(n); });
+    });
+
+    gallery.querySelector(".stage .prev").addEventListener("click", function () { show(index - 1); });
+    gallery.querySelector(".stage .next").addEventListener("click", function () { show(index + 1); });
+
+    // Small arrows under the image step through the screenshots too
+    gallery.querySelectorAll(".strip-btn").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        show(index + (btn.classList.contains("prev") ? -1 : 1));
+      });
+    });
+
+    stage.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowLeft") show(index - 1);
+      if (e.key === "ArrowRight") show(index + 1);
+    });
+
+    var startX = null;
+    stage.addEventListener("touchstart", function (e) { startX = e.touches[0].clientX; }, { passive: true });
+    stage.addEventListener("touchend", function (e) {
+      if (startX === null) return;
+      var dx = e.changedTouches[0].clientX - startX;
+      if (Math.abs(dx) > 40) show(index + (dx < 0 ? 1 : -1));
+      startX = null;
+    });
+
+    // Click the big image to view it full size
+    if (lightbox && typeof lightbox.showModal === "function") {
+      var lbImg = lightbox.querySelector("img");
+      img.addEventListener("click", function () {
+        lbImg.src = img.src;
+        lbImg.alt = img.alt;
+        lightbox.showModal();
+      });
+      lightbox.addEventListener("click", function () { lightbox.close(); });
+    }
+
+    show(0);
   }
 
   /* ---------- Footer year ---------- */

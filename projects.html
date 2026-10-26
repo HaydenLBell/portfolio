@@ -46,10 +46,11 @@
     <div class="page-head">
       <span class="eyebrow">// Projects</span>
       <h1>Things I've built</h1>
-      <p class="lead">Hover a card for more, click to open the details.</p>
+      <p class="lead">Hover a card for a preview, click to open the full project page.</p>
 
       <br><h3>Quick links</h3>
       <ul class="project-nav">
+        <li><a href="#selected">Selected</a></li>
         <li><a href="#games">Game Development</a></li>
         <li><a href="#embedded">Cyber Security & Embedded Systems</a></li>
         <li><a href="#university">University</a></li>
@@ -57,23 +58,76 @@
   
       </ul>
     </div>
-    <!-- To add a project: copy one <div class="card"> block. Everything inside
-         .card-details is what appears in the pop-up when the card is clicked. -->
+    <!-- To add a project: copy one <a class="card"> block, then copy any page in
+         projects/ (e.g. projects/dune-surfer.html), rename it and point the href at it. -->
 
 
 
 
 
 
+    <!-- ===== Selected projects =====
+         Your hand-picked best work. Each of these also appears under "All projects" below. -->
+    <section class="section" id="selected" aria-labelledby="selected-title">
+      <h2 class="section-title" id="selected-title">Selected projects <span class="count">03</span></h2>
+      <div class="featured-grid">
+        <a class="card card-featured" href="projects/hull-of-a-job.html" data-project>
+          <span class="card-media">
+            <!-- Swap for a real image, e.g. assets/projects/hull-of-a-job/header.jpg -->
+            <img src="assets/placeholders/header.svg" alt="Hull of a Job screenshot">
+            <span class="see-more"><span>View project</span></span>
+          </span>
+          <div class="card-body">
+            <span class="card-eyebrow">Game Development</span>
+            <h3>Hull of a Job</h3>
+            <p>A calm, low-stimulation game where you play a contractor sent to clean and repair submarines. Built in Unity 6 with URP.</p>
+            <div class="card-tags"><span>Unity 6</span><span>C#</span><span>URP</span><span>Game Design</span></div>
+          </div>
+        </a>
+        <a class="card card-featured" href="projects/backtest-overfitting-detector.html" data-project>
+          <span class="card-media">
+            <!-- Swap for a real image, e.g. assets/projects/backtest-overfitting-detector/header.jpg -->
+            <img src="assets/placeholders/header.svg" alt="Backtest Overfitting Detector chart">
+            <span class="see-more"><span>View project</span></span>
+          </span>
+          <div class="card-body">
+            <span class="card-eyebrow">Quant</span>
+            <h3>Backtest Overfitting Detector</h3>
+            <p>A tool that flags trading strategies whose backtest results are likely to be overfit rather than genuinely predictive.</p>
+            <div class="card-tags"><span>Quant</span><span>Statistics</span><span>Backtesting</span></div>
+          </div>
+        </a>
+        <a class="card card-featured" href="projects/hack-the-box.html" data-project>
+          <span class="card-media">
+            <!-- Swap for a real image, e.g. assets/projects/hack-the-box/header.jpg -->
+            <img src="assets/placeholders/header.svg" alt="Hack The Box certificates">
+            <span class="see-more"><span>View project</span></span>
+          </span>
+          <div class="card-body">
+            <span class="card-eyebrow">Cyber Security</span>
+            <h3>Hack The Box Certifications</h3>
+            <p>Linux Fundamentals, SOC and penetration testing certifications through Hack The Box.</p>
+            <div class="card-tags"><span>Pentesting</span><span>Linux</span><span>SOC</span><span>HTB</span></div>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- ===== All projects ===== -->
+    <section class="all-projects" id="all" aria-labelledby="all-title">
+      <div class="all-head">
+        <span class="eyebrow">// Everything</span>
+        <h2 id="all-title">All projects</h2>
+      </div>
      <section class="section project-section" id="games" aria-labelledby="games-title">
-      <h2 class="section-title" id="games-title">Game Development <span class="count">05</span></h2>
+      <h3 class="section-title" id="games-title">Game Development <span class="count">05</span></h3>
       <div class="card-grid">
 
 
 
 
 
-        <div class="card" role="button" tabindex="0" data-project>
+        <a class="card" href="projects/echo-of-shadows.html" data-project>
           <span class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="20" height="11" rx="5"/><path d="M7 11v3M5.5 12.5h3"/><circle cx="16" cy="11.5" r="1"/><circle cx="18" cy="13.5" r="1"/></svg></span>
           <span class="see-more"><span>See more</span></span>
           <div class="card-body">
@@ -81,10 +135,10 @@
             <p>First person stealth game built in Unity.</p>
             <div class="card-tags"><span>Unity</span><span>C#</span><span>Multi-threading</span><span>Lighting</span></div>
           </div>
-        </div>
+        </a>
 
 
-      <div class="card" role="button" tabindex="0" data-project>
+      <a class="card" href="projects/dune-surfer.html" data-project>
           <span class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l9 5v10l-9 5-9-5V7z"/><path d="M3 7l9 5 9-5M12 12v10"/></svg></span>
           <span class="see-more"><span>See more</span></span>
           <div class="card-body">
@@ -92,20 +146,20 @@
             <p>A game where you surf down procedurally generated dunes, do tricks, and get the highest score possible on a gobal leaderboard</p>
             <div class="card-tags"><span>Unity</span><span>Procedural Generation</span></div>
           </div>
-        </div>
+        </a>
 
 
-        <div class="card" role="button" tabindex="0" data-project>
-          <span class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6L9 21l-3-3z"/><path d="M5 14l5 5M3 21l3-3"/></svg></span>
+        <a class="card" href="projects/hull-of-a-job.html" data-project>
+          <span class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 14c0-2.2 2.7-4 6-4h7c2.8 0 5 1.8 5 4s-2.2 4-5 4H9c-3.3 0-6-1.8-6-4z"/><path d="M11 10V7h4v3M13 7V5"/><circle cx="10" cy="14" r="1"/><circle cx="14" cy="14" r="1"/></svg></span>
           <span class="see-more"><span>See more</span></span>
           <div class="card-body">
-            <h3>Maritime Fixer</h3>
-            <p>Low Stimulation designed game where you clean and repair maritime vessels.</p>
-            <div class="card-tags"><span>Unity</span><span>Prototype</span><span>Collaborative</span></div>
+            <h3>Hull of a Job</h3>
+            <p>Low-stimulation game where you clean and repair submarines and other maritime vessels.</p>
+            <div class="card-tags"><span>Unity 6</span><span>C#</span><span>URP</span><span>Collaborative</span></div>
           </div>
-        </div>
+        </a>
 
-        <div class="card" role="button" tabindex="0" data-project>
+        <a class="card" href="projects/season-roller.html" data-project>
           <span class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l9 5v10l-9 5-9-5V7z"/><path d="M3 7l9 5 9-5M12 12v10"/></svg></span>
           <span class="see-more"><span>See more</span></span>
           <div class="card-body">
@@ -113,11 +167,11 @@
             <p>A game based on the 4 seasons, with different levels and characters depending on the season. Platformer in 3D.</p>
             <div class="card-tags"><span>Unity</span><span>Design</span></div>
           </div>
-        </div>
+        </a>
 
         
 
-      <div class="card" role="button" tabindex="0" data-project>
+      <a class="card" href="projects/souls-like.html" data-project>
           <span class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6L9 21l-3-3z"/><path d="M5 14l5 5M3 21l3-3"/></svg></span>
           <span class="see-more"><span>See more</span></span>
           <div class="card-body">
@@ -125,7 +179,7 @@
             <p>A third person souls-like, inspired by Elden Ring and Dark Souls.</p>
             <div class="card-tags"><span>Unity</span><span>Souls-Like</span><span>AI Enemies</span></div>
           </div>
-        </div>
+        </a>
 
 
 
@@ -150,9 +204,9 @@
 
 
     <section class="section project-section" id="embedded" aria-labelledby="embedded-title">
-      <h2 class="section-title" id="embedded-title">Cyber Security & Embedded Systems <span class="count">04</span></h2>
+      <h3 class="section-title" id="embedded-title">Cyber Security & Embedded Systems <span class="count">04</span></h3>
       <div class="card-grid">
-        <div class="card" role="button" tabindex="0" data-project>
+        <a class="card" href="projects/hwracing-vcu.html" data-project>
           <span class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 15l2-5c.5-1.3 1.5-2 3-2h8c1.5 0 2.5.7 3 2l2 5v3H3z"/><circle cx="7.5" cy="16.5" r="1.5"/><circle cx="16.5" cy="16.5" r="1.5"/></svg></span>
           <span class="see-more"><span>See more</span></span>
           <div class="card-body">
@@ -160,10 +214,9 @@
             <p>Vehicle control unit software for the Formula Student car.</p>
             <div class="card-tags"><span>C</span><span>CAN</span><span>RTOS</span></div>
           </div>
-          
-        </div>
+        </a>
         
-        <div class="card" role="button" tabindex="0" data-project>
+        <a class="card" href="projects/home-lab.html" data-project>
           <span class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/><circle cx="12" cy="15.5" r="1.5"/></svg></span>
           <span class="see-more"><span>See more</span></span>
           <div class="card-body">
@@ -171,20 +224,18 @@
             <p>A lab setup for practising attack and defence, as well as house-wide ad-blocker.</p>
             <div class="card-tags"><span>Networking</span><span>VMs</span><span>Pihole</span></div>
           </div>
-          
-        </div>
+        </a>
 
-        <div class="card" role="button" tabindex="0" data-project>
+        <a class="card" href="projects/hack-the-box.html" data-project>
           <span class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l8 3v6c0 5-3.5 9-8 11-4.5-2-8-6-8-11V5z"/><path d="M9 12l2 2 4-4"/></svg></span>
           <span class="see-more"><span>See more</span></span>
           <div class="card-body">
-            <h3>Various Hack The Box Certification</h3>
+            <h3>Hack The Box Certifications</h3>
             <p>Linux Fundamentals, SOC, Pentesting.</p>
             <div class="card-tags"><span>Pentesting</span><span>Linux</span><span>HTB</span></div>
           </div>
-          
-        </div>
-        <div class="card" role="button" tabindex="0" data-project>
+        </a>
+        <a class="card" href="projects/cctv-video-recovery.html" data-project>
           <span class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M6 9l3 3-3 3M12 15h6"/></svg></span>
           <span class="see-more"><span>See more</span></span>
           <div class="card-body">
@@ -192,8 +243,7 @@
             <p>Recovered video data from a destroyed explosives bunker CCTV system.</p>
             <div class="card-tags"><span>Linux</span><span>Digital Forensics</span><span>Security</span></div>
           </div>
-          
-        </div>
+        </a>
        
       </div>
     </section>
@@ -202,10 +252,10 @@
 
 
     <section class="section project-section" id="university" aria-labelledby="university-title">
-      <h2 class="section-title" id="university-title">University Projects <span class="count">03</span></h2>
+      <h3 class="section-title" id="university-title">University Projects <span class="count">02</span></h3>
       <div class="card-grid">
         
-        <div class="card" role="button" tabindex="0" data-project>
+        <a class="card" href="projects/mastermind.html" data-project>
           <span class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 8l-4 4 4 4M16 8l4 4-4 4M14 5l-4 14"/></svg></span>
           <span class="see-more"><span>See more</span></span>
           <div class="card-body">
@@ -213,9 +263,8 @@
             <p>Created a PIN guessing game with various hardware, and used C and Assembly to interface.</p>
             <div class="card-tags"><span>C</span><span>Assembly</span><span>Hardware</span></div>
           </div>
-          
-        </div>
-        <div class="card" role="button" tabindex="0" data-project>
+        </a>
+        <a class="card" href="projects/group-software-project.html" data-project>
           <span class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M15 14.5c3 0 6 1.8 6 5"/></svg></span>
           <span class="see-more"><span>See more</span></span>
           <div class="card-body">
@@ -223,8 +272,7 @@
             <p>Collectively creating a public transport application over an academic year.</p>
             <div class="card-tags"><span>Agile</span><span>Git</span></div>
           </div>
-          
-        </div>
+        </a>
       </div>
 
 
@@ -232,10 +280,19 @@
     </section>
 
 
-    <section class="section project-section" id="otherprojects" aria-labelledby="university-title">
-      <h2 class="section-title" id="university-title">Miscellaneous Projects <span class="count">02</span></h2>
+    <section class="section project-section" id="otherprojects" aria-labelledby="otherprojects-title">
+      <h3 class="section-title" id="otherprojects-title">Miscellaneous Projects <span class="count">03</span></h3>
       <div class="card-grid">
-        <div class="card" role="button" tabindex="0" data-project>
+        <a class="card" href="projects/backtest-overfitting-detector.html" data-project>
+          <span class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="M7 15l4-5 3 3 5-7"/><path d="M15 6h4v4"/></svg></span>
+          <span class="see-more"><span>See more</span></span>
+          <div class="card-body">
+            <h3>Backtest Overfitting Detector</h3>
+            <p>Flags trading strategies whose backtest results are likely to be overfit.</p>
+            <div class="card-tags"><span>Quant</span><span>Statistics</span><span>Backtesting</span></div>
+          </div>
+        </a>
+        <a class="card" href="projects/opengl-graphics-engine.html" data-project>
           <span class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h10a4 4 0 0 1 4 4v12H8a4 4 0 0 1-4-4z"/><path d="M4 16a4 4 0 0 1 4-4h10"/></svg></span>
           <span class="see-more"><span>See more</span></span>
           <div class="card-body">
@@ -243,9 +300,8 @@
             <p>A graphics engine built to display simple graphics, materials, and angles in OpenGL and C++.</p>
             <div class="card-tags"><span>C++</span><span>OpenGL</span><span>Graphics</span></div>
           </div>
-          
-        </div>
-        <div class="card" role="button" tabindex="0" data-project>
+        </a>
+        <a class="card" href="projects/investment-demo.html" data-project>
           <span class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 8l-4 4 4 4M16 8l4 4-4 4M14 5l-4 14"/></svg></span>
           <span class="see-more"><span>See more</span></span>
           <div class="card-body">
@@ -253,22 +309,13 @@
             <p>One-line summary — e.g. a small shell or allocator in C.</p>
             <div class="card-tags"><span>Java</span><span>Investment</span><span>Data Visualisation</span></div>
           </div>
-          
-        </div>
+        </a>
         
       </div>
-   
-
-   
-
-    
+    </section>
+    </section>
 
   </main>
-
-  <dialog class="project-dialog" id="project-dialog" aria-label="Project details">
-    <button class="dialog-close" type="button" aria-label="Close">×</button>
-    <div class="dialog-inner dialog-body"></div>
-  </dialog>
 
 
   <footer class="site-footer">

@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mastermind game using Hardware-Software Interfacing — Hayden Bell</title>
+  <meta name="description" content="Created a PIN guessing game with various hardware, and used C and Assembly to interface.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="../css/styles.css">
+  <script src="../js/apps.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <nav class="nav" aria-label="Main">
+      <a class="brand" href="../index.html">
+        <span class="brand-mark">HB</span>
+        <span>Hayden Bell</span>
+      </a>
+
+      <button class="menu-btn" type="button" aria-expanded="false" aria-controls="nav-links" aria-label="Menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+
+      <ul class="nav-links" id="nav-links">
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="../about.html">About</a></li>
+        <li><a href="../projects.html" aria-current="page">Projects</a></li>
+      </ul>
+
+      <button class="theme-toggle" type="button" role="switch" aria-checked="false" aria-label="Dark mode">
+        <span class="track">
+          <span class="thumb">
+            <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+            <svg class="icon-moon" viewBox="0 0 24 24" fill="currentColor"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+          </span>
+        </span>
+      </button>
+    </nav>
+  </header>
+
+  <main id="main" class="store-page">
+    <!-- ==========================================================
+         PROJECT PAGE — Mastermind game using Hardware-Software Interfacing
+         Images: put this project's pictures in assets/projects/mastermind/
+         and swap the placeholder paths below (search for "placeholders").
+         ========================================================== -->
+
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="../projects.html">All Projects</a>
+      <span aria-hidden="true">›</span>
+      <a href="../projects.html#university">University Projects</a>
+      <span aria-hidden="true">›</span>
+      <span aria-current="page">Mastermind game using Hardware-Software Interfacing</span>
+    </nav>
+
+    <h1 class="store-title">Mastermind game using Hardware-Software Interfacing</h1>
+
+    <!-- ===== Hero: gallery + summary panel ===== -->
+    <div class="store-hero">
+      <section class="gallery" data-gallery aria-label="Screenshots">
+        <div class="stage" tabindex="0">
+          <img class="stage-img" src="../assets/placeholders/shot-1.svg" alt="Mastermind game using Hardware-Software Interfacing screenshot 1">
+          <video class="stage-video" controls playsinline hidden></video>
+          <button class="carousel-arrow prev" type="button" aria-label="Previous screenshot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+          <button class="carousel-arrow next" type="button" aria-label="Next screenshot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button>
+          <span class="stage-count" aria-live="polite"></span>
+        </div>
+
+        <!-- Thumbnails: one <button class="shot-thumb"> per picture. data-src is the full-size image.
+             For a video, add data-video="../assets/projects/mastermind/trailer.mp4" to a shot-thumb. -->
+        <div class="thumbs">
+          <button class="strip-btn prev" type="button" aria-label="Previous screenshot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+          <div class="thumb-strip">
+            <button class="shot-thumb" type="button" data-src="../assets/placeholders/shot-1.svg" aria-label="Screenshot 1">
+              <img src="../assets/placeholders/shot-1.svg" alt="Mastermind game using Hardware-Software Interfacing screenshot 1" loading="lazy">
+            </button>
+            <button class="shot-thumb" type="button" data-src="../assets/placeholders/shot-2.svg" aria-label="Screenshot 2">
+              <img src="../assets/placeholders/shot-2.svg" alt="Mastermind game using Hardware-Software Interfacing screenshot 2" loading="lazy">
+            </button>
+            <button class="shot-thumb" type="button" data-src="../assets/placeholders/shot-3.svg" aria-label="Screenshot 3">
+              <img src="../assets/placeholders/shot-3.svg" alt="Mastermind game using Hardware-Software Interfacing screenshot 3" loading="lazy">
+            </button>
+            <button class="shot-thumb" type="button" data-src="../assets/placeholders/shot-4.svg" aria-label="Screenshot 4">
+              <img src="../assets/placeholders/shot-4.svg" alt="Mastermind game using Hardware-Software Interfacing screenshot 4" loading="lazy">
+            </button>
+            <button class="shot-thumb" type="button" data-src="../assets/placeholders/shot-5.svg" aria-label="Screenshot 5">
+              <img src="../assets/placeholders/shot-5.svg" alt="Mastermind game using Hardware-Software Interfacing screenshot 5" loading="lazy">
+            </button>
+          </div>
+          <button class="strip-btn next" type="button" aria-label="Next screenshot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button>
+        </div>
+      </section>
+
+      <aside class="capsule">
+        <img class="capsule-img" src="../assets/placeholders/header.svg" alt="Mastermind game using Hardware-Software Interfacing header image">
+        <p class="capsule-desc">Created a PIN guessing game with various hardware, and used C and Assembly to interface.</p>
+        <dl class="info-list">
+          <div><dt>Category</dt><dd>University Projects</dd></div>
+          <div><dt>Role</dt><dd>Add your role</dd></div>
+          <div><dt>Team</dt><dd>Solo / team size</dd></div>
+          <div><dt>Date</dt><dd>Add date</dd></div>
+          <div><dt>Status</dt><dd><span class="status">Complete</span></dd></div>
+        </dl>
+        <p class="tag-label">Tags</p>
+        <ul class="tag-row"><li>C</li><li>Assembly</li><li>Hardware</li></ul>
+      </aside>
+    </div>
+
+    <!-- ===== Body: description + sidebar ===== -->
+    <div class="store-body">
+      <article class="store-main">
+        <section class="store-section">
+          <h2 class="store-h">About this project</h2>
+          <p>Created a PIN guessing game with various hardware, and used C and Assembly to interface.</p>
+          <p>Replace this with a fuller description: what the project is, why you made it, and what problem it solves. Two or three short paragraphs reads well here.</p>
+
+          <figure class="store-figure">
+            <img src="../assets/placeholders/shot-2.svg" alt="" loading="lazy">
+            <figcaption>Optional wide image or GIF with a caption.</figcaption>
+          </figure>
+        </section>
+
+        <section class="store-section">
+          <h2 class="store-h">Key features</h2>
+          <ul class="feature-list">
+            <li><strong>Feature one</strong> — a sentence on what it does and how you built it.</li>
+            <li><strong>Feature two</strong> — a sentence on what it does and how you built it.</li>
+            <li><strong>Feature three</strong> — a sentence on what it does and how you built it.</li>
+          </ul>
+        </section>
+
+        <section class="store-section">
+          <h2 class="store-h">Challenges &amp; what I learned</h2>
+          <p>The hardest technical problem, how you approached it, and what you'd do differently next time. Recruiters read this part closely.</p>
+        </section>
+
+        <section class="store-section">
+          <h2 class="store-h">Tech specs</h2>
+          <table class="spec-table">
+            <tr><th scope="row">Course</th><td>Add course code</td></tr>
+            <tr><th scope="row">Language</th><td>Add language</td></tr>
+            <tr><th scope="row">Tooling</th><td>Add tools</td></tr>
+            <tr><th scope="row">Assessment</th><td>Add grade if you want</td></tr>
+          </table>
+        </section>
+      </article>
+
+      <aside class="store-side">
+        <div class="side-box">
+          <h2 class="side-h">Links</h2>
+          <a class="btn" href="#">Source on GitHub</a>
+          <a class="btn btn-ghost" href="#">Report (PDF)</a>
+        </div>
+
+        <div class="side-box">
+          <h2 class="side-h">More projects</h2>
+          <ul class="related-list">
+          <li>
+            <a class="related" href="group-software-project.html">
+              <span class="related-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M15 14.5c3 0 6 1.8 6 5"/></svg></span>
+              <span><strong>Group Software Project</strong><small>University Projects</small></span>
+            </a>
+          </li>
+          <li>
+            <a class="related" href="echo-of-shadows.html">
+              <span class="related-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="20" height="11" rx="5"/><path d="M7 11v3M5.5 12.5h3"/><circle cx="16" cy="11.5" r="1"/><circle cx="18" cy="13.5" r="1"/></svg></span>
+              <span><strong>Echo of Shadows</strong><small>Game Development</small></span>
+            </a>
+          </li>
+          <li>
+            <a class="related" href="dune-surfer.html">
+              <span class="related-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l9 5v10l-9 5-9-5V7z"/><path d="M3 7l9 5 9-5M12 12v10"/></svg></span>
+              <span><strong>Dune Surfer</strong><small>Game Development</small></span>
+            </a>
+          </li>
+          <li>
+            <a class="related" href="maritime-fixer.html">
+              <span class="related-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6L9 21l-3-3z"/><path d="M5 14l5 5M3 21l3-3"/></svg></span>
+              <span><strong>Maritime Fixer</strong><small>Game Development</small></span>
+            </a>
+          </li>
+          </ul>
+        </div>
+
+        <a class="back-link" href="../projects.html#university">← Back to all projects</a>
+      </aside>
+    </div>
+  </main>
+
+  <dialog class="lightbox" aria-label="Full-size screenshot">
+    <img alt="">
+  </dialog>
+
+  <footer class="site-footer">
+    <span>© <span data-year>2026</span> Hayden Bell</span>
+    <span><a href="https://github.com/your-username">GitHub</a> · <a href="https://www.linkedin.com/in/your-profile">LinkedIn</a> · <a href="mailto:you@example.com">Email</a></span>
+  </footer>
+</body>
+</html>
