@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Hayden Bell — Home</title>
+  <title>Hayden Bell — Portfolio</title>
   <meta name="description" content="Portfolio of Hayden Bell, Computer Science student at Heriot-Watt University.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -28,7 +28,6 @@
 
       <ul class="nav-links" id="nav-links">
         <li><a href="index.html" aria-current="page">Home</a></li>
-        <li><a href="about.html">About</a></li>
         <li><a href="projects.html">Projects</a></li>
       </ul>
 
@@ -44,51 +43,116 @@
   </header>
 
   <main id="main">
-    <div class="page-head">
-      <span class="eyebrow">// Highlights</span>
-      <h1>Hi, I'm Hayden.</h1>
-      <p class="lead">| 3rd Year BSc Computer Science Student at Heriot-Watt University <br>| Software Engineer at HWRacing <br>| Security, Cloud, and Software</p>
-    </div>
+    <!-- ===== Intro ===== -->
+    <section class="about-grid hero" id="about" aria-labelledby="hero-title">
+      <figure class="headshot">
+        <!-- Replace with your photo: assets/headshot.jpg (portrait, roughly 4:5) -->
+        <img src="assets/1741774745018.jpg" alt="Headshot of Hayden Bell">
+      </figure>
 
+      <div>
+        <span class="eyebrow">// Hello</span>
+        <h1 id="hero-title">Hi, I'm Hayden.</h1>
+        <ul class="hero-roles">
+          <li>3rd Year BSc Computer Science Student at Heriot-Watt University</li>
+          <li>Software Engineer at HWRacing | Software Engineer at AeroWatt</li>
+          <li>Security, Quant, and Software</li>
+        </ul>
+
+        <p>I'm in my penultimate year of a BSc in Computer Science at Heriot-Watt University in Edinburgh. Since 2024 I've been an embedded software engineer at HW Racing, the university's Formula Student team, where I work on the vehicle control unit.</p>
+        <p>Outside of that I build games in Unity, work through Hack The Box, and like digging into how things work underneath, operating systems, lambda calculus, low-level code.</p>
+        <p>Contact me at: haydenbell2206@gmail.com, or through my LinkedIn provided below.</p> 
+        <ul class="facts">
+          <li><span class="label">Studying</span><span class="value">BSc Computer Science (Hons)</span></li>
+          <li><span class="label">University</span><span class="value">Heriot-Watt, Edinburgh</span></li>
+          <li><span class="label">Expected Graduation</span><span class="value">2028</span></li>
+          <li><span class="label">Looking for</span><span class="value">Summer 2027 internships</span></li>
+        </ul>
+
+        <!-- CVs: put the PDFs in assets/ with these names (or change the hrefs) -->
+        <div class="cv-group">
+          <span class="cv-label">View my CV</span>
+          <div class="cv-buttons">
+            <a class="btn cv-btn" href="assets/cv-security.pdf" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l8 3v6c0 5-3.5 9-8 11-4.5-2-8-6-8-11V5z"/><path d="M9 12l2 2 4-4"/></svg>
+              Security
+            </a>
+            <a class="btn cv-btn" href="assets/cv-software.pdf" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 8l-4 4 4 4M16 8l4 4-4 4M14 5l-4 14"/></svg>
+              Software
+            </a>
+            <a class="btn cv-btn" href="assets/cv-quant.pdf" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="M7 15l4-5 3 3 5-7"/></svg>
+              Quant
+            </a>
+          </div>
+        </div>
+        <a class="btn btn-ghost" href="mailto:haydenbell2206@gmail.com">Get in touch</a>
+      </div>
+    </section>
+
+    <!-- ===== Highlights ===== -->
+    <section class="section" id="highlights" aria-labelledby="highlights-title">
+      <h2 class="section-title" id="highlights-title">Highlights</h2>
     <!-- ===== Carousel =====
-         To add a slide: copy one <figure class="slide"> block. Dots are generated automatically.
+         Slides 1–3 are your Selected projects. To add a slide: copy one <figure class="slide"> block. Dots are generated automatically.
          data-interval = auto-advance in ms (set to 0 to turn it off). -->
     <section class="carousel" data-carousel data-interval="7000" tabindex="0" aria-roledescription="carousel" aria-label="Highlights">
       <div class="carousel-track">
 
-        <figure class="slide" aria-roledescription="slide" aria-label="1 of 4">
-          <img src="assets/highlight-1.svg" alt="HW Racing car on track">
+        <figure class="slide" aria-roledescription="slide" aria-label="1 of 6">
+          <!-- Swap for a real screenshot, e.g. assets/projects/hull-of-a-job/header.jpg -->
+          <img src="assets/highlight-3.svg" alt="Hull of a Job screenshot">
           <figcaption class="slide-caption">
-            <span class="tag">Embedded Systems</span>
-            <h2>HW Racing - Vehicle Control Unit</h2>
-            <p>Development in low level programming using RTOS, CAN, and C. <a href="projects.html#embedded">Read more</a></p>
+            <span class="tag">Game Development</span>
+            <h2>Hull of a Job</h2>
+            <p>A calm, low-stimulation game about cleaning and repairing submarines, built in Unity 6 with URP. <a href="projects/hull-of-a-job.html">Read more</a></p>
           </figcaption>
         </figure>
 
-        <figure class="slide" aria-roledescription="slide" aria-label="2 of 4">
+        <figure class="slide" aria-roledescription="slide" aria-label="2 of 6">
+          <!-- Swap for a real image, e.g. assets/projects/backtest-overfitting-detector/header.jpg -->
+          <img src="assets/highlight-4.svg" alt="Backtest Overfitting Detector chart">
+          <figcaption class="slide-caption">
+            <span class="tag">Quant</span>
+            <h2>Backtest Overfitting Detector</h2>
+            <p>Flags trading strategies whose backtest results are likely to be overfit rather than genuinely predictive. <a href="projects/backtest-overfitting-detector.html">Read more</a></p>
+          </figcaption>
+        </figure>
+
+        <figure class="slide" aria-roledescription="slide" aria-label="3 of 6">
           <img src="assets/highlight-2.svg" alt="Hack The Box certification">
           <figcaption class="slide-caption">
             <span class="tag">Cyber Security</span>
             <h2>Hack The Box Certifications</h2>
-            <p>Working my way towards a number of cyber security certifications. <a href="projects.html#security">Read more</a></p>
+            <p>Working my way towards a number of cyber security certifications. <a href="projects/hack-the-box.html">Read more</a></p>
           </figcaption>
         </figure>
 
-        <figure class="slide" aria-roledescription="slide" aria-label="3 of 4">
+        <figure class="slide" aria-roledescription="slide" aria-label="4 of 6">
+          <img src="assets/highlight-1.svg" alt="HW Racing car on track">
+          <figcaption class="slide-caption">
+            <span class="tag">Embedded Systems</span>
+            <h2>HW Racing - Vehicle Control Unit</h2>
+            <p>Development in low level programming using RTOS, CAN, and C. <a href="projects/hwracing-vcu.html">Read more</a></p>
+          </figcaption>
+        </figure>
+
+        <figure class="slide" aria-roledescription="slide" aria-label="5 of 6">
           <img src="assets/highlight-3.svg" alt="Screenshot from a Unity game">
           <figcaption class="slide-caption">
             <span class="tag">Game Development</span>
             <h2>Echo of Shadows</h2>
-            <p>A first person stealth game made in Unity. Focus on performance, lighting, and multi-threaded development. <a href="projects.html#games">Read more</a></p>
+            <p>A first person stealth game made in Unity. Focus on performance, lighting, and multi-threaded development. <a href="projects/echo-of-shadows.html">Read more</a></p>
           </figcaption>
         </figure>
 
-        <figure class="slide" aria-roledescription="slide" aria-label="4 of 4">
+        <figure class="slide" aria-roledescription="slide" aria-label="6 of 6">
           <img src="assets/highlight-4.svg" alt="University project screenshot">
           <figcaption class="slide-caption">
             <span class="tag">University</span>
             <h2>Mastermind - Hardware-Software Interfacing</h2>
-            <p>Used a raspberry pi, breadboard, LCD, and variety of resistors to make a guessing game using a button, interfaced with C and Assembly. <a href="projects.html#university">Read more</a></p>
+            <p>Used a raspberry pi, breadboard, LCD, and variety of resistors to make a guessing game using a button, interfaced with C and Assembly. <a href="projects/mastermind.html">Read more</a></p>
           </figcaption>
         </figure>
 
@@ -103,21 +167,108 @@
     </section>
     <div class="carousel-dots" data-carousel-dots></div>
 
-    <!-- ===== Quick links ===== -->
-    <nav class="quick-links" aria-label="Explore">
-      <a class="quick-link" href="about.html">
-        <span class="ql-title">About me</span>
-        <span class="ql-desc">Background, skills and what I'm working towards.</span>
-      </a>
-      <a class="quick-link" href="projects.html">
-        <span class="ql-title">All projects</span>
-        <span class="ql-desc">University, games, security and embedded work.</span>
-      </a>
-      <a class="quick-link" href="assets/haydenbellcv.pdf">
-        <span class="ql-title">View CV</span>
-        <span class="ql-desc">See my CV to learn more.</span>
-      </a>
-    </nav>
+
+      <div class="highlights-more">
+        <a class="btn btn-ghost" href="projects.html">See all projects →</a>
+      </div>
+    </section>
+
+    <section class="section" id="experience">
+      <h2 class="section-title">Experience</h2>
+      <ol class="timeline">
+        <li>
+          <span class="when">Oct 2026 — present</span>
+          <h3>Software Engineer · AeroWatt</h3>
+          <p>▪ ?
+<br>▪ ?
+<br>▪ ></p>
+        </li>
+        <li>
+          <span class="when">Sep 2024 — Oct 2026</span>
+          <h3>Embedded Software Engineer · HW Racing</h3>
+          <p>▪ Designed and created a Vehicle control unit to work securely, efficiently, and effectively. Developed CAN message handling, fault
+detection, watchdogs, and more in embedded C
+<br>▪ Working as part of a larger team to create a working formula style vehicle
+<br>▪ Large focus on secure programming practices such as bound checking, watch dogs, and static analysis.</p>
+        </li>
+        <li>
+          <span class="when">2024 — present</span>
+          <h3>BSc Computer Science · Heriot-Watt University</h3>
+          <p><b>Relevant Modules</b></p>
+          <p>▪ Data Communications and Networking</p>
+          <p>▪ Data Structures and Algorithms</p>
+          <p>▪ Hardware-Software Interfacing</p>
+          <p>▪ Lambda Calculus (Foundations I) and Discrete Maths</p>
+          <p>▪ Software Engineering</p>
+          <p>▪ AI and Intelligent Agents</p>
+        </li>
+        <li>
+          <span class="when">2023 - present</span>
+          <h3>Retail Assistant · TKMaxx & CardFactory</h3>
+          <p>Part-time alongside studies. Customer service, teamwork, working under pressure.</p>
+          <p>(CardFactory 2023-2024; TKMaxx 2025-present).</p>
+        </li>
+      </ol>
+    </section>
+
+    <section class="section" id="skills">
+      <h2 class="section-title">Skills</h2>
+      <ul class="chips">
+        <li class="hot">C / C++</li>
+        <li class="hot">Embedded systems</li>
+        <li class="hot">Penetration testing</li>
+        <li class="hot">Linux</li>
+        <li>C#</li>
+        <li>Unity</li>
+        <li>Python</li>
+        <li>Git</li>
+        <li>Networking</li>
+        <li>HTML / CSS / JS</li>
+        <li>GNS3</li>
+        <li>Shell Scripting</li>
+        <li>Vulnerability Assessment</li>
+        <li>Embedded C</li>
+        <li>RTOS Development</li>
+        <li>ARM7</li>
+        <li>SQL</li>
+        <li>Concurrent Systems</li>
+        <li>Multi-Threading</li>
+        <li>CAN</li>
+        <li>Hardware-Software Interfacing</li>
+        <li>Node.js</li>
+        <li>Matlab</li>
+        <li>Javascript</li>
+        <li>PIDDL</li>
+
+      </ul>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">Outside of tech</h2>
+      <p>Outwith my professional development, I enjoy a variety of hobbies. I enjoy the outdoors and have spent
+        a lot of time camping and hiking. I also do mountaineering, and alpinism - In the summer of 2026, I climbed
+        Gran Paradiso, the tallest mountain in Italy. I play tennis, in local club competitions, and I train for Ironmans (70.3).
+        In the past, I was a competitive figure skater, competiting in national championships.
+        
+      </p>
+      <p>
+      I have a deep interest in the stock market and trading, which is where my involvement with quantitative development began. I have been trading indices, futures,
+      company stocks for the last 2-3 years, and more recently made a venture into CFD's. I have consecutively out-performed the S&P 500 and the NASDAQ, with an annual return averaging
+      around 35%, with an all time year high of 80% return. I have fine tuned my trading style over the last few years, and have settled for an overall passive, but accurate style, with a slightly
+      more aggressive CFD trade style.
+        </p> 
+        <p>
+      I like to play chess, which I do primarily online at chess.com. I am currently ~1700 ELO, working towards approaching 2000 ELO before I graduate.
+      I also like to play poker, a card game that directly involves statistics and probability has great interest to me. I am in my universities Poker Society.
+      Analysis of my poker gameplay places me as a TAG player (Tight and Aggressive), and I play ~4.8 bb/100.
+
+      </p>
+       <p>
+      My other interests include cars (primarily motorsports and rally-spec), cooking, 3D modelling, drawing, and playing video games (specifically strategy games and games with good stories). 
+      I also play the piano, and have recently started learning to play the guitar.
+
+      </p>
+    </section>
   </main>
 
   <footer class="site-footer">
