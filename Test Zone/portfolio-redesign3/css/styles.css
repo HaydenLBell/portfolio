@@ -323,6 +323,8 @@ p { margin: 0 0 1em; }
 .section { padding-top: 4.5rem; }
 .section:first-child { padding-top: 4rem; }
 
+.chips li.hot { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+
 .section-title {
   display: flex; align-items: center; gap: 0.8rem;
   margin-bottom: 1.75rem;
