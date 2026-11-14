@@ -1,289 +1,213 @@
 /* =========================================================
-   Portfolio — shared script (apps.js)
-   Loaded in the <head> of every page WITHOUT defer so the
-   saved theme is applied before the page paints (no flash).
-   Everything else waits for DOMContentLoaded.
+   apps.js — loaded in the <head> of every page (no defer)
+   so a saved theme is applied before the page paints.
+
+   Theme: follows the system setting until the visitor uses
+   the switch, then remembers their choice.
    ========================================================= */
-
 (function () {
-  "use strict";
-
-  /* ---------- Theme: apply saved choice immediately ---------- */
-  var STORAGE_KEY = "portfolio-theme";
+  var KEY = "theme";
   var root = document.documentElement;
+  var systemDark = window.matchMedia ? window.matchMedia("(prefers-color-scheme: dark)") : null;
 
-  function readStoredTheme() {
-    try { return localStorage.getItem(STORAGE_KEY); } catch (e) { return null; }
+  var saved = null;
+  try { saved = localStorage.getItem(KEY); } catch (e) { /* storage blocked */ }
+  if (saved === "light" || saved === "dark") {
+    root.setAttribute("data-theme", saved);
   }
-  function storeTheme(value) {
-    try { localStorage.setItem(STORAGE_KEY, value); } catch (e) { /* storage blocked */ }
-  }
-  function systemPrefersDark() {
-    return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
-  }
+
   function currentTheme() {
-    return root.getAttribute("data-theme") || (systemPrefersDark() ? "dark" : "light");
+    var chosen = root.getAttribute("data-theme");
+    if (chosen) {
+      return chosen;
+    }
+    if (systemDark && systemDark.matches) {
+      return "dark";
+    }
+    return "light";
   }
-
-  var saved = readStoredTheme();
-  if (saved === "light" || saved === "dark") root.setAttribute("data-theme", saved);
 
   document.addEventListener("DOMContentLoaded", function () {
-    initThemeToggle();
-    initMobileMenu();
-    initCarousel();
-    initProjectCards();
-    initGallery();
-    initFooterYear();
-  });
-
-  /* ---------- Theme toggle switch ---------- */
-  function initThemeToggle() {
     var toggle = document.querySelector(".theme-toggle");
-    if (!toggle) return;
+    if (!toggle) {
+      return;
+    }
 
     function sync() {
-      toggle.setAttribute("aria-checked", currentTheme() === "dark" ? "true" : "false");
+      var isDark = currentTheme() === "dark";
+      toggle.setAttribute("aria-checked", isDark ? "true" : "false");
     }
-    sync();
 
     toggle.addEventListener("click", function () {
       var next = currentTheme() === "dark" ? "light" : "dark";
       root.setAttribute("data-theme", next);
-      storeTheme(next);
+      try { localStorage.setItem(KEY, next); } catch (e) { /* storage blocked */ }
       sync();
     });
 
-    // If the visitor hasn't chosen, follow OS changes live
-    if (window.matchMedia) {
-      window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", function () {
-        if (!readStoredTheme()) sync();
-      });
-    }
-  }
-
-  /* ---------- Mobile nav ---------- */
-  function initMobileMenu() {
-    var btn = document.querySelector(".menu-btn");
-    var links = document.getElementById("nav-links");
-    if (!btn || !links) return;
-
-    btn.addEventListener("click", function () {
-      var open = links.classList.toggle("open");
-      btn.setAttribute("aria-expanded", open ? "true" : "false");
-    });
-  }
-
-  /* ---------- Carousel ---------- */
-  function initCarousel() {
-    var carousel = document.querySelector("[data-carousel]");
-    if (!carousel) return;
-
-    var track = carousel.querySelector(".carousel-track");
-    var slides = Array.prototype.slice.call(carousel.querySelectorAll(".slide"));
-    var prev = carousel.querySelector(".carousel-arrow.prev");
-    var next = carousel.querySelector(".carousel-arrow.next");
-    var dotsWrap = document.querySelector("[data-carousel-dots]");
-    var interval = parseInt(carousel.getAttribute("data-interval"), 10) || 0; // ms, 0 = off
-    var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    var index = 0;
-    var timer = null;
-
-    if (slides.length === 0) return;
-
-    // Build one dot per slide so adding a slide is just adding HTML
-    var dots = slides.map(function (slide, i) {
-      var dot = document.createElement("button");
-      dot.type = "button";
-      dot.setAttribute("aria-label", "Go to slide " + (i + 1));
-      dot.addEventListener("click", function () { goTo(i); restart(); });
-      if (dotsWrap) dotsWrap.appendChild(dot);
-      return dot;
-    });
-
-    function goTo(i) {
-      index = (i + slides.length) % slides.length;
-      track.style.transform = "translateX(" + (-index * 100) + "%)";
-      slides.forEach(function (s, n) {
-        s.setAttribute("aria-hidden", n === index ? "false" : "true");
-        s.querySelectorAll("a, button").forEach(function (el) {
-          el.tabIndex = n === index ? 0 : -1;
-        });
-      });
-      dots.forEach(function (d, n) {
-        d.setAttribute("aria-current", n === index ? "true" : "false");
-      });
+    // If the visitor hasn't picked a theme, keep the switch in step with the system
+    if (systemDark && systemDark.addEventListener) {
+      systemDark.addEventListener("change", sync);
     }
 
-    function start() {
-      if (!interval || reduceMotion || slides.length < 2) return;
-      stop();
-      timer = setInterval(function () { goTo(index + 1); }, interval);
-    }
-    function stop() { if (timer) { clearInterval(timer); timer = null; } }
-    function restart() { stop(); start(); }
+    sync();
+  });
 
-    if (prev) prev.addEventListener("click", function () { goTo(index - 1); restart(); });
-    if (next) next.addEventListener("click", function () { goTo(index + 1); restart(); });
-
-    // Keyboard arrows when the carousel has focus
-    carousel.addEventListener("keydown", function (e) {
-      if (e.key === "ArrowLeft") { goTo(index - 1); restart(); }
-      if (e.key === "ArrowRight") { goTo(index + 1); restart(); }
-    });
-
-    // Swipe on touch screens
-    var startX = null;
-    carousel.addEventListener("touchstart", function (e) { startX = e.touches[0].clientX; }, { passive: true });
-    carousel.addEventListener("touchend", function (e) {
-      if (startX === null) return;
-      var dx = e.changedTouches[0].clientX - startX;
-      if (Math.abs(dx) > 40) { goTo(index + (dx < 0 ? 1 : -1)); restart(); }
-      startX = null;
-    });
-
-    // Pause auto-advance while the visitor is interacting
-    carousel.addEventListener("mouseenter", stop);
-    carousel.addEventListener("mouseleave", start);
-    carousel.addEventListener("focusin", stop);
-    carousel.addEventListener("focusout", start);
-
-    goTo(0);
-    start();
-  }
-
-  /* ---------- Project cards ----------
-     Cards are links to their own page. On a normal click we play the
-     ripple + press effect first, then follow the link. Ctrl/Cmd/middle
-     click still opens in a new tab as usual. */
-  function initProjectCards() {
-    var cards = document.querySelectorAll(".card[data-project]");
-    if (!cards.length) return;
-
-    cards.forEach(function (card) {
-      card.addEventListener("click", function (e) {
-        var href = card.getAttribute("href");
-        if (!href || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
-        e.preventDefault();
-
-        // 1. Ripple from the click point (centre if opened with the keyboard)
-        var rect = card.getBoundingClientRect();
-        var ripple = document.createElement("span");
-        ripple.className = "ripple";
-        ripple.style.left = (e.clientX ? e.clientX - rect.left : rect.width / 2) + "px";
-        ripple.style.top = (e.clientY ? e.clientY - rect.top : rect.height / 2) + "px";
-        card.appendChild(ripple);
-        ripple.addEventListener("animationend", function () { ripple.remove(); });
-
-        // 2. Press animation
-        card.classList.remove("is-pressed");
-        void card.offsetWidth; // restart animation
-        card.classList.add("is-pressed");
-
-        // 3. Go to the project page once the effect has played
-        setTimeout(function () { window.location.href = href; }, 260);
-      });
-    });
-
-    // Clear the pressed state if the visitor comes back with the Back button
-    window.addEventListener("pageshow", function () {
-      cards.forEach(function (c) { c.classList.remove("is-pressed"); });
-    });
-  }
-
-  /* ---------- Project page gallery (Steam-style) ---------- */
-  function initGallery() {
+  /* ---------- Project page gallery ----------
+     One big image, arrows, and a thumbnail per picture.
+     Arrow keys work when the gallery has focus. */
+  document.addEventListener("DOMContentLoaded", function () {
     var gallery = document.querySelector("[data-gallery]");
-    if (!gallery) return;
+    if (!gallery) {
+      return;
+    }
 
-    var stage = gallery.querySelector(".stage");
-    var img = gallery.querySelector(".stage-img");
-    var video = gallery.querySelector(".stage-video");
-    var counter = gallery.querySelector(".stage-count");
-    var strip = gallery.querySelector(".thumb-strip");
-    var thumbs = Array.prototype.slice.call(gallery.querySelectorAll(".shot-thumb"));
-    var lightbox = document.querySelector(".lightbox");
-    var index = 0;
+    var stageImg = gallery.querySelector(".stage-img");
+    var count = gallery.querySelector(".stage-count");
+    var thumbs = gallery.querySelectorAll(".shot-thumb");
+    var current = 0;
 
-    if (!thumbs.length) return;
-
-    function show(i) {
-      index = (i + thumbs.length) % thumbs.length;
-      var t = thumbs[index];
-
-      if (t.dataset.video) {
-        img.hidden = true;
-        video.hidden = false;
-        if (video.getAttribute("src") !== t.dataset.video) video.src = t.dataset.video;
-      } else {
-        if (!video.hidden) { video.pause(); video.hidden = true; }
-        img.hidden = false;
-        img.src = t.dataset.src;
-        var thumbImg = t.querySelector("img");
-        img.alt = thumbImg ? thumbImg.alt : "";
-        img.classList.remove("fade-in");
-        void img.offsetWidth;
-        img.classList.add("fade-in");
+    function show(index) {
+      if (index < 0) {
+        index = thumbs.length - 1;
       }
+      if (index >= thumbs.length) {
+        index = 0;
+      }
+      current = index;
 
-      thumbs.forEach(function (th, n) {
-        th.setAttribute("aria-current", n === index ? "true" : "false");
-      });
-      if (counter) counter.textContent = (index + 1) + " / " + thumbs.length;
+      var thumbImg = thumbs[index].querySelector("img");
+      stageImg.src = thumbImg.src;
+      stageImg.alt = thumbImg.alt;
 
-      // Keep the active thumbnail in view without scrolling the page
-      strip.scrollTo({
-        left: t.offsetLeft - strip.clientWidth / 2 + t.clientWidth / 2,
-        behavior: "smooth"
-      });
+      for (var i = 0; i < thumbs.length; i++) {
+        thumbs[i].setAttribute("aria-current", i === index ? "true" : "false");
+      }
+      count.textContent = (index + 1) + " / " + thumbs.length;
     }
 
-    thumbs.forEach(function (t, n) {
-      t.addEventListener("click", function () { show(n); });
-    });
-
-    gallery.querySelector(".stage .prev").addEventListener("click", function () { show(index - 1); });
-    gallery.querySelector(".stage .next").addEventListener("click", function () { show(index + 1); });
-
-    // Small arrows under the image step through the screenshots too
-    gallery.querySelectorAll(".strip-btn").forEach(function (btn) {
-      btn.addEventListener("click", function () {
-        show(index + (btn.classList.contains("prev") ? -1 : 1));
-      });
-    });
-
-    stage.addEventListener("keydown", function (e) {
-      if (e.key === "ArrowLeft") show(index - 1);
-      if (e.key === "ArrowRight") show(index + 1);
-    });
-
-    var startX = null;
-    stage.addEventListener("touchstart", function (e) { startX = e.touches[0].clientX; }, { passive: true });
-    stage.addEventListener("touchend", function (e) {
-      if (startX === null) return;
-      var dx = e.changedTouches[0].clientX - startX;
-      if (Math.abs(dx) > 40) show(index + (dx < 0 ? 1 : -1));
-      startX = null;
-    });
-
-    // Click the big image to view it full size
-    if (lightbox && typeof lightbox.showModal === "function") {
-      var lbImg = lightbox.querySelector("img");
-      img.addEventListener("click", function () {
-        lbImg.src = img.src;
-        lbImg.alt = img.alt;
-        lightbox.showModal();
-      });
-      lightbox.addEventListener("click", function () { lightbox.close(); });
+    for (var i = 0; i < thumbs.length; i++) {
+      (function (index) {
+        thumbs[index].addEventListener("click", function () { show(index); });
+      })(i);
     }
+
+    gallery.querySelector(".stage-arrow.prev").addEventListener("click", function () { show(current - 1); });
+    gallery.querySelector(".stage-arrow.next").addEventListener("click", function () { show(current + 1); });
+
+    gallery.addEventListener("keydown", function (event) {
+      if (event.key === "ArrowLeft") {
+        show(current - 1);
+      }
+      if (event.key === "ArrowRight") {
+        show(current + 1);
+      }
+    });
 
     show(0);
-  }
+  });
 
-  /* ---------- Footer year ---------- */
-  function initFooterYear() {
-    document.querySelectorAll("[data-year]").forEach(function (el) {
-      el.textContent = new Date().getFullYear();
+  /* ---------- The shrimp ----------
+     Swims in a few seconds after the page loads. Click it to make it spin.
+     Every tenth click gets a bigger spin. */
+  var SHRIMP_SVG =
+    '<svg viewBox="0 0 64 64" aria-hidden="true" focusable="false">' +
+      '<g fill="none" stroke="#ad9466" stroke-width="1.4" stroke-linecap="round">' +
+        '<path d="M10 27 C 4 20, 6 10, 16 5"/>' +
+        '<path d="M10 30 C 2 29, 1 18, 7 11"/>' +
+      '</g>' +
+      '<g stroke="#7a1f35" stroke-width="1.6" stroke-linecap="round">' +
+        '<path d="M20 32 L 16 42"/>' +
+        '<path d="M25 29 L 22 40"/>' +
+        '<path d="M30 26 L 28 38"/>' +
+        '<path d="M35 25 L 34 36"/>' +
+      '</g>' +
+      '<path d="M41 44 L 33 52 L 39 51 L 41 56 L 46 47 Z" fill="#e8806e" stroke="#7a1f35" stroke-width="1.6" stroke-linejoin="round"/>' +
+      '<g fill="#e8806e" stroke="#7a1f35" stroke-width="1.6">' +
+        '<circle cx="44" cy="40" r="5"/>' +
+        '<circle cx="47.5" cy="33.5" r="6"/>' +
+        '<circle cx="46" cy="26" r="7"/>' +
+        '<circle cx="40" cy="20" r="8"/>' +
+        '<circle cx="31" cy="18.5" r="8.5"/>' +
+        '<circle cx="22.5" cy="22" r="9"/>' +
+      '</g>' +
+      '<path d="M8.5 30 C 9 22, 15 19, 22 21 C 25 25, 25 33, 19 37 C 14 38, 9 35, 8.5 30 Z" fill="#f09382" stroke="#7a1f35" stroke-width="1.6" stroke-linejoin="round"/>' +
+      '<circle cx="13.5" cy="27" r="2.4" fill="#1d2327"/>' +
+      '<circle cx="12.8" cy="26.2" r="0.8" fill="#ffffff"/>' +
+    '</svg>';
+
+  var REACTIONS = ["!", "hi!", "wheee", "again?", "♪", "hehe", "blub", "♥"];
+
+  document.addEventListener("DOMContentLoaded", function () {
+    var shrimp = document.createElement("button");
+    shrimp.type = "button";
+    shrimp.className = "shrimp";
+    shrimp.setAttribute("aria-label", "Spin the shrimp");
+    shrimp.innerHTML = '<span class="shrimp-body">' + SHRIMP_SVG + "</span>";
+    document.body.appendChild(shrimp);
+
+    var clicks = 0;
+    var busy = false;
+
+    // swim in after a short wait
+    setTimeout(function () {
+      shrimp.classList.add("is-here");
+    }, 2500);
+
+    function blowBubbles(count) {
+      for (var i = 0; i < count; i++) {
+        var bubble = document.createElement("span");
+        bubble.className = "shrimp-bubble";
+        bubble.style.animationDelay = (i * 0.12) + "s";
+        bubble.style.setProperty("--drift", (Math.random() * 20 - 14) + "px");
+        shrimp.appendChild(bubble);
+        removeLater(bubble, 1500 + i * 120);
+      }
+    }
+
+    function say(text) {
+      var old = shrimp.querySelector(".shrimp-say");
+      if (old) {
+        old.remove();
+      }
+      var bubble = document.createElement("span");
+      bubble.className = "shrimp-say";
+      bubble.textContent = text;
+      shrimp.appendChild(bubble);
+      removeLater(bubble, 1500);
+    }
+
+    function removeLater(element, ms) {
+      setTimeout(function () {
+        if (element.parentNode) {
+          element.parentNode.removeChild(element);
+        }
+      }, ms);
+    }
+
+    shrimp.addEventListener("click", function () {
+      if (busy) {
+        return;
+      }
+      busy = true;
+      clicks = clicks + 1;
+
+      var big = clicks % 10 === 0;
+      if (big) {
+        shrimp.classList.add("is-big");
+        say("you found the shrimp");
+        blowBubbles(6);
+      } else {
+        say(REACTIONS[(clicks - 1) % REACTIONS.length]);
+        blowBubbles(3);
+      }
+
+      shrimp.classList.add("is-spinning");
+      setTimeout(function () {
+        shrimp.classList.remove("is-spinning");
+        shrimp.classList.remove("is-big");
+        busy = false;
+      }, big ? 1200 : 750);
     });
-  }
+  });
 })();
