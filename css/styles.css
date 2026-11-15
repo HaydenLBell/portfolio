@@ -49,6 +49,14 @@
   /* x position of the trace: the left edge of the content column */
   --spine-x: max(var(--gutter), calc((100% - var(--wrap)) / 2 + var(--gutter)));
 
+  /* The two thin guide lines (from the original site) */
+  --guide: rgba(140, 150, 156, 0.4);   /* shows on the light page and on the dark header */
+  --nav-h: 68px;              /* height of the nav row at the top of the band */
+  --guide-x: 48px;            /* ~half an inch from the left */
+  --guide-y: 8px;            /* ~half an inch below the nav */
+
+  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Consolas, monospace;
+
   /* Circuit pattern used on cards until a real image is added */
   --circuit: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='140' viewBox='0 0 240 140'%3E%3Cg fill='none' stroke='%23ad9466' stroke-opacity='.32' stroke-width='2'%3E%3Cpath d='M0 30h70l20 20h60l15-15h75'/%3E%3Cpath d='M0 100h40l25-25h55'/%3E%3Cpath d='M150 140v-25l20-20h70'/%3E%3Cpath d='M110 0v20l-15 15'/%3E%3C/g%3E%3Cg fill='%231f272b' stroke='%23ad9466' stroke-opacity='.6' stroke-width='2'%3E%3Ccircle cx='120' cy='75' r='5'/%3E%3Ccircle cx='95' cy='35' r='4'/%3E%3Ccircle cx='170' cy='95' r='4'/%3E%3C/g%3E%3C/svg%3E");
 
@@ -66,6 +74,7 @@
   --burgundy: #6a1a2e;
   --burgundy3: #281717;
   --burgundy-line: #a8344f;
+  --guide: rgba(230, 233, 235, 0.14);
   --link: #df0034;
   --link-hover: #f2bfcb;
   color-scheme: dark;
@@ -83,6 +92,7 @@
     --burgundy: #5a1a2a;
     --burgundy3: #281717;
     --burgundy-line: #a8344f;
+    --guide: rgba(230, 233, 235, 0.14);
     --link: #e597a9;
     --link-hover: #f2bfcb;
     color-scheme: dark;
@@ -140,6 +150,38 @@ p { margin: 0 0 1em; }
 }
 .skip-link:focus { top: 1rem; }
 
+/* ---------- 3a. The two guide lines (from the original site) ----------
+   A vertical line about half an inch in from the left, and a horizontal
+   line about half an inch below the nav. They're part of the page, so they
+   scroll with it, and they're drawn on top of the header band.
+   On narrower screens the vertical line moves into the middle of the left
+   margin so it never touches the content. */
+body { position: relative; }   /* lets the lines run the full height of the page */
+
+body::before,
+body::after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  pointer-events: none;
+  background: var(--guide);
+}
+body::before {               /* vertical */
+  top: 0; bottom: 0;
+  left: min(var(--guide-x), calc(var(--spine-x) / 2));
+  width: 1px;
+}
+body::after {                /* horizontal */
+  left: 0; right: 0;
+  top: calc(var(--nav-h) + var(--guide-y));
+  height: 1px;
+}
+
+/* lines go over the header band, but under the page content and footer */
+.band { position: relative; z-index: 0; }
+main,
+.site-footer { position: relative; z-index: 2; }
+
 /* ---------- 4. Header band ---------- */
 .band {
   position: relative;
@@ -151,7 +193,7 @@ p { margin: 0 0 1em; }
 
 .band-top {
   display: flex; align-items: center; justify-content: space-between; gap: 1rem;
-  padding-block: 1.25rem;
+  padding-block: 1.55rem;
 }
 
 .brand {
@@ -212,7 +254,7 @@ p { margin: 0 0 1em; }
   grid-template-columns: minmax(200px, 300px) minmax(0, 1fr);
   gap: 2.5rem 4rem;
   align-items: start;
-  padding-block: 2.5rem 6rem;
+  padding-block: calc(var(--guide-y) + 2rem) 6rem;   /* starts below the horizontal line */
 }
 
 .headshot { position: relative; margin: 0 14px 14px 0; }
@@ -279,7 +321,7 @@ p { margin: 0 0 1em; }
 }
 
 /* Page header (projects index + project pages) */
-.page-head { padding-block: 2.5rem 5.5rem; }
+.page-head { padding-block: calc(var(--guide-y) + 2rem) 5.5rem; }   /* starts below the horizontal line */
 .page-head h1 { font-size: clamp(2.2rem, 6vw, 3.75rem); font-weight: 800; }
 .page-head .lede { max-width: 38em; }
 .breadcrumb { margin: 0 0 1rem; color: var(--on-dark-muted); }
@@ -445,6 +487,8 @@ a.card:hover .card-media img { transform: scale(1.03); }
   border-radius: 999px;
   font-size: 0.88rem;
 }
+
+.chips li.hot { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
 
 
 
@@ -620,23 +664,17 @@ a.card:hover .card-media img { transform: scale(1.03); }
   .stage-arrow { opacity: 1; width: 38px; height: 38px; }
 }
 
-/* ---------- 11. Footer ---------- */
+/* ---------- 11. Footer (the original site's footer) ---------- */
 .site-footer {
-  margin-top: 6rem;
-  border-top: 3px solid var(--brass);
-  background: var(--burgundy3);
-  color: var(--on-dark);
+  display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between;
+  margin-top: 4rem;
+  padding: 1.5rem var(--spine-x);   /* lines up with the page content */
+  border-top: 1px solid var(--rule);
+  font-family: var(--font-mono); font-size: 0.85rem;
+  color: var(--muted);
 }
-.site-footer a { color: var(--on-dark); }
-.site-footer a:hover { color: #ffffff; }
-.footer-inner {
-  display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 1.5rem 3rem;
-  padding-block: 1.2rem;
-}
-.footer-title { margin-bottom: 0.4rem; font-size: 1.6rem; font-weight: 750; }
-.footer-email { font-size: 1.15rem; }
-.footer-links { display: flex; flex-wrap: wrap; gap: 0.4rem 1.5rem; margin: 0; padding: 0; list-style: none; }
-.footer-small { width: 100%; margin: 0; color: rgba(238, 240, 241, 0.72); font-size: 0.9rem; }
+.site-footer a { color: var(--muted); }
+.site-footer a:hover { color: var(--link); }
 
 /* ---------- 12. Load sequence: the trace draws itself once ---------- */
 @media (prefers-reduced-motion: no-preference) {
@@ -661,7 +699,8 @@ a.card:hover .card-media img { transform: scale(1.03); }
 }
 
 @media (max-width: 760px) {
-  .hero { grid-template-columns: 1fr; padding-top: 1.5rem; }
+  :root { --guide-y: 24px; }
+  .hero { grid-template-columns: 1fr; padding-top: calc(var(--guide-y) + 1.5rem); }
   .headshot { max-width: 180px; }
 
   .card-grid,
