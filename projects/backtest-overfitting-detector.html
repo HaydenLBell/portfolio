@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Backtest overfitting detector: Hayden Bell</title>
-  <meta name="description" content="A tool that estimates how likely a trading strategy's backtest is to be overfit, so a lucky result isn't mistaken for a real edge.">
+  <meta name="description" content="A tool that estimates whether the best strategy in a backtest has a real edge, or is just the luckiest of many tries.">
   <link rel="preload" href="../assets/fonts/archivo.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="../css/styles.css">
   <script src="../js/apps.js"></script>
@@ -20,7 +20,7 @@
       </a>
       <nav class="site-nav" aria-label="Main">
         <ul>
-          <li><a href="../index.html#work">Work</a></li>
+          <li><a href="../index.html#work">Home</a></li>
           <li><a href="../projects.html">All projects</a></li>
           <li><button class="theme-toggle" type="button" role="switch" aria-checked="false" aria-label="Dark mode">
             <span class="track">
@@ -65,21 +65,22 @@
           <span class="stage-count" aria-live="polite">1 / 3</span>
         </div>
         <div class="thumbs">
-          <button class="shot-thumb" type="button" aria-label="Picture 1"><img src="../assets/projects/backtest-overfitting-detector/shot-1.jpg" alt="Backtest overfitting detector, picture 1"></button>
-          <button class="shot-thumb" type="button" aria-label="Picture 2"><img src="../assets/projects/backtest-overfitting-detector/shot-2.jpg" alt="Backtest overfitting detector, picture 2"></button>
-          <button class="shot-thumb" type="button" aria-label="Picture 3"><img src="../assets/projects/backtest-overfitting-detector/shot-3.jpg" alt="Backtest overfitting detector, picture 3"></button>
+          <button class="shot-thumb" type="button" aria-label="Picture 1"><img src="../assets/projects/backtest-overfitting-detector/shot-1.jpg" alt="Histogram of the Sharpe ratios of 1,000 random noise strategies, with the best one marked far out on the right"></button>
+          <button class="shot-thumb" type="button" aria-label="Picture 2"><img src="../assets/projects/backtest-overfitting-detector/shot-2.jpg" alt="In-sample against out-of-sample Sharpe ratio for each split's winner, showing that winners on noise don't carry their performance over"></button>
+          <button class="shot-thumb" type="button" aria-label="Picture 3"><img src="../assets/projects/backtest-overfitting-detector/shot-3.jpg" alt="Terminal output of the detector's report, showing the deflated Sharpe ratio, PBO and verdict"></button>
         </div>
       </section>
 
       <aside class="capsule">
-        <p class="capsule-desc">A tool that estimates how likely a trading strategy's backtest is to be overfit, so a lucky result isn't mistaken for a real edge.</p>
+        <p class="capsule-desc">A tool that estimates whether the best strategy in a backtest has a real edge, or is just the luckiest of many tries. 
+          <br><a href="https://github.com/HaydenLBell/backtest-overfitting-detector">Github Link</a></p>
         <dl class="info-list">
           <div><dt>Category</dt><dd>Quant</dd></div>
           <div><dt>Role</dt><dd>Solo project</dd></div>
           <div><dt>Date</dt><dd>Nov 2026 to now</dd></div>
           <div><dt>Status</dt><dd><span class="status">In progress</span></dd></div>
         </dl>
-        <ul class="tag-row"><li>Python</li><li>NumPy</li><li>pandas</li><li>Statistics</li><li>Backtesting</li></ul>
+        <ul class="tag-row"><li>Python</li><li>C++</li><li>NumPy</li><li>SciPy</li><li>Matplotlib</li><li>Statistics</li><li>Backtesting</li></ul>
       </aside>
     </div>
 
@@ -87,23 +88,45 @@
       <article>
         <section class="store-section">
           <h2 class="store-h">About this project</h2>
-          <p>Try enough versions of a strategy on the same historical data and some of them will look excellent purely by chance. A backtest on its own can't tell you whether you found an edge or fitted the noise, and the version that looks best is often the one that was fitted hardest.</p>
-          <p>This tool takes a strategy's backtest results and estimates how likely they are to hold up on data the strategy hasn't seen.</p>
+          <p>Try enough versions of a trading strategy on the same historical data and one of them will look brilliant. That doesn't mean it works. It might just be the version that happened to line up with the noise, and a backtest on its own can't tell you which.</p>
+          <p>To see how bad this gets, I generated 1,000 strategies made of pure random noise, so every one of them had a true Sharpe ratio of zero, and backtested each over a year of daily data. The best one came out with an annualised Sharpe ratio of about 3.4. Shown on its own, that looks like a great find. It's just the luckiest of 1,000.</p>
+          <p>This tool takes the returns of every variant you tried, not just the winner, and estimates how much of the winner's performance is likely to be luck.</p>
         </section>
 
         <section class="store-section">
           <h2 class="store-h">What it checks</h2>
           <ul class="feature-list">
-            <li><strong>Deflated Sharpe ratio</strong>: Adjusts a strategy's Sharpe ratio for how many variations were tried, so a high score found by brute force counts for less.</li>
-            <li><strong>Probability of backtest overfitting</strong>: Splits the history into blocks, tries every combination of in-sample and out-of-sample halves, and measures how often the in-sample winner falls behind out of sample.</li>
-            <li><strong>Walk-forward testing</strong>: Re-fits the strategy on a rolling window and tests it only on the data that comes after.</li>
-            <li><strong>A clear verdict</strong>: One report per strategy: likely real, uncertain, or likely overfit, with the numbers behind it.</li>
+            <li><strong>Deflated Sharpe ratio</strong>: Starts from the probabilistic Sharpe ratio, which asks how confident you can be that a strategy's true Sharpe ratio is above a benchmark, given how much data you have and how skewed or fat-tailed the returns are. The deflated version raises that benchmark to the Sharpe ratio the best of N zero-skill strategies would reach by luck, so the more variants you try, the higher the bar.</li>
+            <li><strong>Probability of backtest overfitting</strong>: Splits the history into equal blocks and tries every way of using half of them to pick a winner and the other half to check it (70 splits with 8 blocks). Each time, it sees where the in-sample winner ranks out of sample. PBO is how often it ends up in the bottom half.</li>
+            <li><strong>A verdict</strong>: One report for the whole set of strategies tried: likely genuine, inconclusive, or likely overfit, with the numbers behind it.</li>
           </ul>
         </section>
 
         <section class="store-section">
+          <h2 class="store-h">The maths, briefly</h2>
+          <p>The luck benchmark for N strategies comes from extreme value theory. It's roughly where the maximum of N draws from a bell curve is expected to land, scaled by how spread out the Sharpe ratios of all the trials were:</p>
+          <p><code>SR* = σ(SR) × [ (1 − γ) Φ⁻¹(1 − 1/N) + γ Φ⁻¹(1 − 1/(Ne)) ]</code></p>
+          <p>where γ ≈ 0.5772 is the Euler–Mascheroni constant. The deflated Sharpe ratio is then the probabilistic Sharpe ratio measured against SR* instead of zero.</p>
+          <p>For PBO, the in-sample winner's out-of-sample rank is turned into a relative rank and then a logit:</p>
+          <p><code>ω = rank / (N + 1),   λ = ln(ω / (1 − ω))</code></p>
+          <p>A negative λ means the winner did worse than the median strategy on data it wasn't picked on. PBO is the share of splits where λ ≤ 0.</p>
+        </section>
+
+        <section class="store-section">
+          <h2 class="store-h">Testing it</h2>
+          <p>Before trusting it on real strategies, I tested it on synthetic data where I already knew the right answer.</p>
+          <ul class="feature-list">
+            <li><strong>Pure noise</strong>: 1,000 noise strategies over a year gave a deflated Sharpe ratio of 0.54. A plain probabilistic Sharpe ratio against zero would call the same winner almost certainly real, because it doesn't know about the other 999. PBO on noise averaged around 0.5, as it should.</li>
+            <li><strong>A planted edge</strong>: I added 0.2% a day to one strategy. With one year of data the detector picked it out but only gave a deflated Sharpe ratio of 0.75, not enough to call it. With ten years it reached 1.00.</li>
+            <li><strong>A realistic edge</strong>: Shrinking the edge to 0.02% a day (an annual Sharpe ratio of about 0.3) meant even ten years of data couldn't confirm it. With 1,000 variants in play, a small real edge just gets lost in the luck.</li>
+          </ul>
+          <p>That last result was the most useful thing I've learned so far. The more ideas you test, the bigger an edge has to be before you can tell it apart from chance.</p>
+        </section>
+
+        <section class="store-section">
           <h2 class="store-h">What I'm working on</h2>
-          <p>Small samples are the hard case. With a few years of daily data the statistics get noisy, so the tool has to say when it can't tell, rather than give a confident answer it can't back up.</p>
+          <p>Next is running it on real research: a sweep of moving-average strategies on 15 years of S&amp;P 500 data, to see whether the best combination survives. After that, unit tests, and rewriting the cross-validation loop in C++ with Python bindings. With 16 blocks it has 12,870 splits to get through, so it's the obvious bottleneck.</p>
+          <p>Small samples are still the hard case. With a few years of daily data the statistics get noisy, and even PBO itself varies a lot from one dataset to the next. The tool needs to say when it can't tell, rather than give a confident answer it can't back up.</p>
         </section>
       </article>
 
